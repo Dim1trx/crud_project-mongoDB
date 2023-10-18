@@ -23,24 +23,15 @@ public class UserResource {
         return ResponseEntity.ok().body(list);
     }
 
-    @GetMapping(path = "/{id}")
+/*    @GetMapping(path = "/{id}")
     public ResponseEntity<User> findById(@PathVariable String id) {
-        User maria = new User("1001", "Maria", "maria@gmail.com");
 
-        if (id.equals(maria.getId())) {
-            return ResponseEntity.ok().body(maria);
-        }
-        else{
-            return ResponseEntity.ok().body(null);
-        }
-    }
+    }*/
 
     @PostMapping
     public ResponseEntity<User> add(@RequestBody User user) {
-        User x = user;
-        user.setId("1003");
+        User obj = service.save(user);;
 
-
-        return ResponseEntity.ok().body(x);
+        return ResponseEntity.ok().body(obj);
     }
 }
