@@ -2,15 +2,13 @@ package com.rodrigues.workshopmongo.resources;
 
 import com.rodrigues.workshopmongo.domain.User;
 import com.rodrigues.workshopmongo.dto.UserDTO;
-import com.rodrigues.workshopmongo.resources.exceptions.StandardError;
 import com.rodrigues.workshopmongo.service.UserService;
-import com.rodrigues.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -38,9 +36,13 @@ public class UserResource {
     }
 
     @PostMapping
-    public ResponseEntity<User> add(@RequestBody User user) {
-        User obj = service.save(user);
+    public ResponseEntity<Void> insert(@RequestBody UserDTO userDTO) {
+        User obj = service.fromDTO(userDTO);
+        obj = service.insert(obj);
 
-        return ResponseEntity.ok().body(obj);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}")
+                .buildAndExpand(obj.getId()).toUri();
+
+        return ResponseEntity.created(uri).build();
     }
 }
