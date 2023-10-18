@@ -2,7 +2,9 @@ package com.rodrigues.workshopmongo.resources;
 
 import com.rodrigues.workshopmongo.domain.User;
 import com.rodrigues.workshopmongo.dto.UserDTO;
+import com.rodrigues.workshopmongo.resources.exceptions.StandardError;
 import com.rodrigues.workshopmongo.service.UserService;
+import com.rodrigues.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,10 +28,14 @@ public class UserResource {
         return ResponseEntity.ok().body(listDTO);
     }
 
-/*    @GetMapping(path = "/{id}")
-    public ResponseEntity<User> findById(@PathVariable String id) {
+    @GetMapping(path = "/{id}")
+    public ResponseEntity<UserDTO> findById(@PathVariable String id) {
+            User user = service.findById(id);
 
-    }*/
+            UserDTO userDTO = new UserDTO(user);
+
+            return ResponseEntity.ok().body(userDTO);
+    }
 
     @PostMapping
     public ResponseEntity<User> add(@RequestBody User user) {

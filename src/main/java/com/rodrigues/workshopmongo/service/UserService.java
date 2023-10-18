@@ -2,6 +2,7 @@ package com.rodrigues.workshopmongo.service;
 
 import com.rodrigues.workshopmongo.domain.User;
 import com.rodrigues.workshopmongo.repository.UserRepository;
+import com.rodrigues.workshopmongo.service.exception.ObjectNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,9 +18,9 @@ public class UserService {
     }
 
     public User findById(String id) {
-        Optional<User> user = userRepository.findById(id);
+        Optional<User> obj = userRepository.findById(id);
 
-        return user.get();
+        return obj.orElseThrow(() -> new ObjectNotFoundException("Object not found."));
     }
 
     public User save(User user) {
